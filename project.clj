@@ -5,4 +5,5 @@
    [clojure-soup/clojure-soup "0.0.1"]
    [congomongo "0.3.1"]
    [clj-http "0.1.3"]
+   [clj-time "0.4.4"]
   ])
