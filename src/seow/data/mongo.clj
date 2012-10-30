@@ -1,22 +1,14 @@
-(ns seow.data 
+(ns seow.data.mongo
  (:import [org.joda.time DateTime])
+ (:import org.bson.types.ObjectId)
  (:require [clojure.data.json :as json])
- ; monger
  (:use monger.operators)
+ (:use [clojure.tools.logging :only (info error)])
  (:require [monger.joda-time])
  (:require [monger.collection :as mc])
  (:require [monger.core :as mg]))
 
-; time to move to monger
-; Monger [1] has several things Congomongo does not (or did not last time I looked at it):
-
-; * No integration of clj-time (transparent Joda Time types serialization)
-; * No integration with clojure.data.json
-; * No query DSL à la Korma
-; * No recommended way of validating your data
-
-; http://clojuremongodb.info/articles/getting_started.html
-; http://localhost:28017/mydb/robots/
+; http://localhost:28017/mydb/
 
 ; records 
 (defrecord website [customer nom urls])
@@ -37,41 +29,29 @@
 ; website
 (defn new-website[customer sitename urls]
 	(mc/insert-and-return :websites (website. customer sitename urls)))
+(defn find-websites[customer]
+	(mc/find-maps :websites {:customer customer}))
+(defn find-website[id]
+	(mc/find-one-as-map :websites {:_id (ObjectId. id)}))
+
 ; filters 
 (defn new-filtre[siteid keywords]
 	(mc/insert :filters (filtre. siteid keywords)))
-(defn filtre-for-site[siteid]
+(defn find-filtres[siteid]
 	(mc/find-maps :filters {:siteid siteid}))
+
 ; seo entries
 (defn new-entry[filtreid values]
+	(info "NEW" filtreid values)
 	(mc/insert :seo (entry. filtreid (DateTime/now) values)))
-
-; search
 (defn find-entries
 	([date-start date-end]
 	(mc/find-maps :seo {:date {"$gt" date-start "$lte" date-end}}))
 	([date-start]
 		(mc/find-maps :seo {:date {"$gt" date-start}})))	
+
+; shortcuts
 (defn yesterday[]
 	(find-entries (.minusDays (DateTime/now) 1) (.minusDays (DateTime/now) 2) ))
 (defn today[] 
 	(find-entries (.minusDays (DateTime/now) 1) ))
-
-; commented
-
-; (def entry1 (entry. "508f49ab3004f21368c81fe0" (DateTime/now) ))
-; (new-entry "508f49ab3004f21368c81fe0" {:google [1 2] :bing [3 5]})
-
-; (filtre-for-site "508f4b8e3004f21368c81fe1")
-
-; (def filtre1 (filtre. "508f4b8e3004f21368c81fe1" ["nico"]))
-; (mc/insert :filters filtre1)
-
-
-; (mc/insert :websites site1)
-
-; (mc/find-maps :websites)
-; (mc/find-maps :websites  {:name "日本語"})
-; (mc/remove :websites {:_id "508e42643004943cb0c3c9f4"})
-
-; (def site1 (website. 1 "日本語"  ["www.touchesthewall.net" "touchesthewall.org"]))
