@@ -1,11 +1,8 @@
-(ns seow.core)
-(use 'seow.engines)
-(use 'jsoup.soup)
-(use 'clojure.pprint)
-(require '[clj-http.client :as client])
-
-; send data to the client
-; (use '[cheshire.core])
+(ns seow.core
+  (:use seow.engines)
+  (:use jsoup.soup)
+  (:use clojure.pprint)
+  (:require [clj-http.client :as client]))
 
 ; http://www.blueglass.com/blog/google-search-url-parameters-query-string-anatomy/
 
@@ -57,11 +54,14 @@
 
 ; testing
 (def target (ref (targets :fresheye)))
+
 (defn q[keywords] (query @target keywords))
 (defn p[keywords] (pprint (q keywords)))
 (defn d[keywords] (fetch-doc @target keywords))
 (defn p[keywords t] (pprint (query (targets t) keywords)))
 (defn q[keywords t] (query (targets t) keywords))
+
+
 
 ; (score "www.nicotouchesthewalls.net" (q "nico" :bing))
 ; (all-scores "linkedin" "nicolas modrzyk")
