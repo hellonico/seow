@@ -4,7 +4,7 @@
 	(:require [noir.response :as response])
 	(:require [cheshire.custom :as json2])
 	(:require [seow.data.mongo :as data])
-	(:use [net.cgrand.enlive-html :as html :only [deftemplate at content set-attr attr? strict-mode]] :reload)
+	(:use [net.cgrand.enlive-html :as html :only [defsnippet deftemplate at content set-attr attr? strict-mode]] :reload)
   	(:require [noir.server :as server]))
 
 ; almost time for enlive
@@ -21,19 +21,31 @@
                (.writeString jsonGenerator (str c))))
 (def jsonutf8 "application/json; charset=UTF-8")
 
-(deftemplate welcome-template
-	"seow/html/welcome.html"
-	[title]
-	[:title] (content title))
+(deftemplate main "seow/html/main.html"
+	[body]
+	[:body] (content body))
+
+(defsnippet welcome-template "seow/html/welcome.html" [:body]  [])
+(defsnippet new-template "seow/html/new.html" [:body] [])
+
+(deftemplate google-template "seow/html/google.html"
+	[])
 
 (defpage "/welcome" []
-	(apply str (welcome-template "Hello user!")))
+	(main (welcome-template)))
+
+(defpage "/new" []
+	(main (new-template)))
+
 
 (defpage "/sites/:customerid" {:keys [customerid]}
 	(response/content-type jsonutf8 (json2/generate-string (data/find-websites customerid))))
 
-(defpage "")
+(defpage "/google" []
+	(apply str (google-template)))
+
+(defpage "/sites/list" []
+	(apply str (listsites-template)))
 	
 (defpage "/myfilters/:wid" {:keys [wid]}
 	(response/json (data/find-filtres wid)))
-
