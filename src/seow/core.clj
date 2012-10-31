@@ -50,27 +50,7 @@
 (defn p[keywords t] (pprint (query (targets t) keywords)))
 (defn q[keywords t] (query (targets t) keywords))
 
-; find website
-(def my-websites  (data/find-websites "nico"))
-(def my-w1 (first my-websites))
-(def my-w1-id (str (:_id my-w1)))
-
-; find filters
-(def filtres (data/find-filtres my-w1-id))
-(def filtre1 (first filtres))
-(def fid (str (filtre1 :_id)))
-
-(def kw (:keywords filtre1))
-
-; find query parameters
-(def kw_string (clojure.string/join " " kw))
-(def url (-> my-w1 :urls first))
-
-(def s1 (all-scores url kw_string))
-(data/new-entry fid s1)
-
 ; workflow
-
 (defn update-score-filtre 
   "Add a new entry for all the scores of that filter for the given url"
   [url filtre]
@@ -89,17 +69,9 @@
     (doseq [f filtres] 
        (update-score-filtre (-> website :urls first) f))))
 
+; find website
 
-
-; (score "www.nicotouchesthewalls.net" (q "nico" :bing))
-; (all-scores "linkedin" "nicolas modrzyk")
-
-; (generate-string (all-scores "linkedin" "nicolas modrzyk"))
-
-; use google charts for the charts
-; https://developers.google.com/chart/interactive/docs/queries
-
-; Noir
-; http://webnoir.org/
-
-; ACTION
+; (def my-websites  (data/find-websites "nico"))
+; (def my-w1 (first my-websites))
+; (def my-w1-id (str (:_id my-w1)))
+; (update-score my-w1-id)
