@@ -8,6 +8,7 @@
  (:require [monger.collection :as mc])
  (:require [monger.core :as mg]))
 
+; useful
 ; http://localhost:28017/mydb/
 
 ; records 
@@ -44,14 +45,19 @@
 (defn new-entry[filtreid values]
 	(info "NEW" filtreid values)
 	(mc/insert :seo (entry. filtreid (DateTime/now) values)))
+
 (defn find-entries
-	([date-start date-end]
-	(mc/find-maps :seo {:date {"$gt" date-start "$lte" date-end}}))
-	([date-start]
-		(mc/find-maps :seo {:date {"$gt" date-start}})))	
+	([fid date-start date-end]
+		(mc/find-maps :seo {:filtreid fid :date {"$gt" date-start "$lte" date-end}}))
+	([fid date-start]
+		(mc/find-maps :seo {:filtreid fid :date {"$gt" date-start}}))
+	([fid]
+		(mc/find-maps :seo {:filtreid fid})))	
 
 ; shortcuts
-(defn yesterday[]
+(defn yesterday[fid]
 	(find-entries (.minusDays (DateTime/now) 1) (.minusDays (DateTime/now) 2) ))
-(defn today[] 
-	(find-entries (.minusDays (DateTime/now) 1) ))
+(defn today[fid] 
+	(find-entries fid (.minusDays (DateTime/now) 1) ))
+(defn twoweeks[fid]
+	(find-entries fid))

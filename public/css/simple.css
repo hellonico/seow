@@ -1,3 +1,27 @@
 body {
 	/*background-color: cyan;*/
 }
+
+#demo-remote {
+	width: 300px;
+}
+
+
+/*forms*/
+.formdecorator label
+{
+    display: block;
+}
+  
+.formdecorator
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  
+.formdecorator li
+{
+    clear: both;
+    margin-bottom: 1em;
+}
