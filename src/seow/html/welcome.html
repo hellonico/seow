@@ -1,12 +1,30 @@
 <body>
+
+	<div class="row">
+	<div class="span3"></div>
+	<div class="span9">
+	<ul class="nav nav-tabs nav-stacked">
+		<li class="disabled"><a href="#">Websites</a></li>
+	</ul>
+	<ul id="websiteslist" class="nav nav-pills nav-stacked">
+		 
+	</ul>
+	</div>
+
+	</div>
 	
+	<script>
+	$(document).ready(function () {
+			$.ajax({
+				url: "/sites/nico",
+				dataType: "json",
+				success: function(data) {
+					for(item in data) {
+						$("#websiteslist").append("<li class=\"active\"><a href=\"#\">"+data[item]["nom"]+"</a></li>");
+					}
+				}
+			})	
+	});	
+	</script>
 
-
-<p>
-<button class="btn btn-large btn-primary" type="button">Large button</button>
-<button class="btn btn-large" type="button">Large button</button>
-</p>
-
-<table id="demo-remote"></table> 
-	
 </body>
