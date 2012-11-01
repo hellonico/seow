@@ -27,8 +27,8 @@
 (defpage "/new" []
 	(main (new-template)))
 
-(defpage "/google" []
-	(main (google-template)))
+(defpage "/chart" []
+	(main (chart-template)))
 
 ; (defpage "/sites/list" []
 ; 	(apply str (listsites-template)))

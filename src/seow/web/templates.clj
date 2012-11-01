@@ -5,7 +5,7 @@
 ; snippets 
 (defsnippet welcome-template "seow/html/welcome.html" [:body]  [])
 (defsnippet new-template "seow/html/new.html" [:body] [])
-(defsnippet google-template "seow/html/google.html" [:body] [])
+(defsnippet chart-template "seow/html/chart.html" [:body] [])
 
 ; templates
 (deftemplate main "seow/html/main.html" [body] [:div#body] (content body))
