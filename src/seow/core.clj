@@ -60,8 +60,6 @@
     (doseq [f filtres] 
        (update-score-filtre (-> website :urls first) f))))
 
-
-
 ; testing
 (def target (ref (targets :fresheye)))
 

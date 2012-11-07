@@ -21,13 +21,20 @@
 (def jsonutf8 "application/json; charset=UTF-8")
 
 ; pages
+(defpage "/" []
+	(response/redirect "/welcome"))
+
 (defpage "/welcome" []
 	(main (welcome-template)))
 
+(defpage "/angular" []
+	(slurp "src/seow/html/angular.html"))
+
 (defpage "/new" []
+	; (slurp "src/seow/html/new2.html"))
 	(main (new-template)))
 
-(defpage "/chart" []
+(defpage "/chart/:wid" {:keys [wid]}
 	(main (chart-template)))
 
 ; (defpage "/sites/list" []

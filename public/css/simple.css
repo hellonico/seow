@@ -25,3 +25,8 @@ body {
     clear: both;
     margin-bottom: 1em;
 }
+
+#chart_div {
+	width: 900px; 
+	height: 500px;
+}

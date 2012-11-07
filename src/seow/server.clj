@@ -3,7 +3,7 @@
     (:use [ring.middleware.file :only [wrap-file]])
     (:require [noir.server :as server]))
 
-(server/load-views "src/seow/web/")
+(server/load-views-ns 'seow.web.top)
 
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))

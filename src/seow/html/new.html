@@ -1,37 +1,6 @@
 <body>  
-    <div class="container">
-        <div class="header">
-            <h2>New Website</h2>
-        </div>
-        <div class="main demo">
-            <form action="overview.html">
-            <ul class="formdecorator">
-                <li>
-                    <h3>ニューサイト名</h3>
-                    <input id="textbox" type="text" />
-                </li>
-                <li>
-                    <h3>URL</h3>
-                    <input id="textbox" type="text" />
-                </li>
-                <li>
-                    <h3>Keywords</h3>
-                    <textarea id="area" rows="2" cols="50"></textarea>
-                </li>
-                <li>
-                    <button class="btn btn-small" id="wijmo-button">Save</button>
-                </li>
-            </ul>
-            </form>
-        </div>
-    </div>
 
-    <script id="scriptInit" type="text/javascript">
-        $(document).ready(function () {
-            $(":input[type='text'],:input[type='password'],textarea").wijtextbox();
-            $("#wijmo-button").button();
-            $("#wijmo-button").click(function () { return false; });
-        });
-    </script>
+<script src="http://code.angularjs.org/angular-1.0.2.min.js"></script>
+<script src="js/app.js"></script>
 
 </body>
