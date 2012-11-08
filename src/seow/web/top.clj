@@ -19,7 +19,7 @@
 (deftemplate main 
 	"seow/html/main.html" [])
 
-; pages
+; Pages
 (defpage "/" []
 	(main))
 
@@ -27,11 +27,11 @@
 (defpage "/sites/:customerid" {:keys [customerid]}
 	(json (data/find-websites customerid)))
 (defpage "/site/:wid" {:keys [wid]} 
-	(response/content-type jsonutf8 
-		(json/generate-string (data/find-website wid))))
+	(json (data/find-website wid)))
 (defpage "/filters/:wid" {:keys [wid]}
-	(response/content-type jsonutf8 
-		(json/generate-string (data/find-filtres wid))))
+	(json  (data/find-filtres wid)))
 (defpage "/points/:fid" {:keys [fid]}
-	(response/content-type jsonutf8 
-		(json/generate-string (data/twoweeks fid))))
+	(json (data/twoweeks fid)))
+(defpage "/site/update/:wid" {:keys [wid]}
+	(seo/update-score wid)
+	(json "OK"))

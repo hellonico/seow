@@ -3,18 +3,29 @@
 <div ng-controller="WebsiteCtrl" class="span9">
 
 	<ul class="nav nav-tabs nav-stacked">
-		<li class="disabled"><a href="#">Websites</a></li>
+		<li class="disabled"><a href="#">My Websites</a></li>
 	</ul>
 
-	<ul id="websiteslist" class="nav nav-pills nav-stacked">
-		<li class="form-inline" ng-repeat="s in sites | filter:query | orderBy:orderProp">
-			<a href="#/charts/{{s._id}}">
-				{{s.nom}}<span style="left-padding:20px; font-size:smaller">[{{s.urls[0]}}]</span>
-			</a>
-			<a href="#/edit/{{s._id}}">
-				<img src="/icons/edit.png" height="16" width="16"/>
-			</a>
-		</li>		 
-	</ul>
+	<table id="websiteslist" class="table table-bordered">
+		<tr ng-repeat="s in sites | filter:query | orderBy:orderProp">
+			<td>
+				<a href="#/charts/{{s._id}}">
+					{{s.nom}}
+				</a>
+			</td>
+			<td>
+				{{s.urls[0]}}
+			<td>
+				<a href="#/edit/{{s._id}}">
+					<img src="/icons/edit.png" height="16" width="16"/>
+				</a>
+			</td>
+			<td>
+				<a ng-click="refresh(s._id)">
+					<img id="refresh-image" src="/icons/refresh.png" height="16" width="16"/>
+				</a>
+			</td>
+		</tr>		 
+	</table>
 
 </div>
