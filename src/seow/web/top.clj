@@ -1,51 +1,37 @@
 (ns seow.web.top
 	(:use noir.core)
-	(:use seow.web.templates)
+	(:use [net.cgrand.enlive-html 
+		:only [defsnippet deftemplate at content set-attr attr? strict-mode]])
 	(:require [seow.core :as seo])
 	(:require [noir.response :as response])
 	(:require [cheshire.custom :as json])
 	(:require [seow.data.mongo :as data]))
 
-; almost time for enlive
-; https://github.com/cgrand/enlive/blob/master/examples/net/cgrand/enlive_html/examples.clj
-
-; almost time for wijmo
-; http://wijmo.com/demo/explore/?widget=Grid&sample=Data%20sources
-
-; less templates 
-; http://lesscss.org/
-
 (json/add-encoder org.bson.types.ObjectId
              (fn [c jsonGenerator]
                (.writeString jsonGenerator (str c))))
-(def jsonutf8 "application/json; charset=UTF-8")
+
+(defn json[result]
+	(response/content-type "application/json; charset=UTF-8" 
+		(json/generate-string result)))
+
+; Enlive Templates
+(deftemplate main 
+	"seow/html/main.html" [])
 
 ; pages
 (defpage "/" []
-	(response/redirect "/welcome"))
-
-(defpage "/welcome" []
-	(main (welcome-template)))
-
-(defpage "/angular" []
-	(slurp "src/seow/html/angular.html"))
-
-(defpage "/new" []
-	; (slurp "src/seow/html/new2.html"))
-	(main (new-template)))
-
-(defpage "/chart/:wid" {:keys [wid]}
-	(main (chart-template)))
-
-; (defpage "/sites/list" []
-; 	(apply str (listsites-template)))
+	(main))
 
 ; API
 (defpage "/sites/:customerid" {:keys [customerid]}
+	(json (data/find-websites customerid)))
+(defpage "/site/:wid" {:keys [wid]} 
 	(response/content-type jsonutf8 
-		(json/generate-string (data/find-websites customerid))))
+		(json/generate-string (data/find-website wid))))
 (defpage "/filters/:wid" {:keys [wid]}
-	(response/json (data/find-filtres wid)))
+	(response/content-type jsonutf8 
+		(json/generate-string (data/find-filtres wid))))
 (defpage "/points/:fid" {:keys [fid]}
 	(response/content-type jsonutf8 
 		(json/generate-string (data/twoweeks fid))))
