@@ -26,7 +26,8 @@ function NavCtrl($scope, $location) {
 
 function EditCtrl($scope, $http, $routeParams) {
     $scope.wid = $routeParams.wid;
-    $scope.website = {"id":$scope.wid};
+    $scope.website = {_id:$scope.wid, customer: "nico", nom: "新しい"};
+
     console.log("edit"+$routeParams.wid);
     $http.get('/site/'+$scope.wid).success(function(data) {
         $scope.website = data;
@@ -47,19 +48,23 @@ function EditCtrl($scope, $http, $routeParams) {
         // $scope.filters.push();
     }
     $scope.save = function() {
+
+      console.log($scope.wid);
       console.log(JSON.stringify($scope.website));
+
       $.ajax({
-      url: "/sites",
-      type: "post",
-      data: $scope.website,
-      dataType:"json",
-      success: function(data) {
-        console.log(data);
-      },
-      error: function(data) {
-        console.log(data);
-      },
-      async: true});
+        url: "/site",
+        type: "post",
+        data: $scope.website,
+        dataType:"json",
+        success: function(data) {
+          console.log(data);
+        },
+        error: function(data) {
+          console.log(data);
+        },
+        async: true
+      });
     }
 }
 
@@ -91,9 +96,8 @@ function ChartsCtrl($scope, $routeParams) {
     }   
 }
 
-function drawChart(id) {
+  function drawChart(id) {
     $("#filterslist tr").removeClass("success");
-    
 
     var jsonData = $.ajax({
       url: "/points/"+id,
@@ -105,28 +109,27 @@ function drawChart(id) {
       var item = data[i];
       var values = item["values"];
       var line = [
-       item["date"].substring(0,10), 
-       values["fresheye"][0], 
-       values["goo"][0], 
-       values["bing"][0], 
-       values["yahoo"][0], 
-       values["google"][0]
+      item["date"].substring(0,10), 
+      values["fresheye"][0], 
+      values["goo"][0], 
+      values["bing"][0], 
+      values["yahoo"][0], 
+      values["google"][0]
       ];
       array.push(line);
 
       $("#f"+id).addClass("success");
-}
+    }
 
-  var data = google.visualization.arrayToDataTable(array);
+    var data = google.visualization.arrayToDataTable(array);
 
-  var options = {
+    var options = {
       title: 'ランキング'
-  };
+    };
 
-  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-  chart.draw(data, options);
-}
-
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
 
 function FiltersCtrl($scope, $http) {
     $http.get('/filters/'+$scope.wid).success(function(data) {

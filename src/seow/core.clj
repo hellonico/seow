@@ -59,19 +59,3 @@
     ]
     (doseq [f filtres] 
        (update-score-filtre (-> website :urls first) f))))
-
-; testing
-(def target (ref (targets :fresheye)))
-
-(defn q[keywords] (query @target keywords))
-(defn p[keywords] (pprint (q keywords)))
-(defn d[keywords] (fetch-doc @target keywords))
-(defn p[keywords t] (pprint (query (targets t) keywords)))
-(defn q[keywords t] (query (targets t) keywords))
-
-; find website
-
-; (def my-websites  (data/find-websites "nico"))
-; (def my-w1 (first my-websites))
-; (def my-w1-id (str (:_id my-w1)))
-; (update-score my-w1-id)

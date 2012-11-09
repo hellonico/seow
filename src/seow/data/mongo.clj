@@ -27,10 +27,16 @@
 ; website
 (defn new-website[customer sitename urls]
 	(mc/insert-and-return :websites (website. customer sitename urls)))
+(defn new-website[website]
+	(mc/insert-and-return :websites (dissoc website :_id)))
 (defn find-websites[customer]
 	(mc/find-maps :websites {:customer customer}))
 (defn find-website[id]
 	(mc/find-one-as-map :websites {:_id (ObjectId. id)}))
+(defn update-website[website]
+	(mc/update-by-id :websites 
+		(ObjectId. (website :_id)) 
+		(dissoc website :_id)))
 
 ; filters 
 (defn new-filtre[siteid keywords]

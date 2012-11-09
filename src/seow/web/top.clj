@@ -25,19 +25,26 @@
 	(main))
 
 ; API
+
 (defpage "/sites/:customerid" {:keys [customerid]}
 	(json (data/find-websites customerid)))
-(defpage "/site/:wid" {:keys [wid]} 
-	(json (data/find-website wid)))
+
 (defpage "/filters/:wid" {:keys [wid]}
 	(json  (data/find-filtres wid)))
 (defpage "/points/:fid" {:keys [fid]}
 	(json (data/twoweeks fid)))
+
+; not updating the data, but pulling new stats here
+; maybe bad naming
 (defpage "/site/update/:wid" {:keys [wid]}
 	(seo/update-score wid)
 	(json "OK"))
-(defpage "/sites" []
-	"hello")
-(defpage [:post "/sites"] {:as website}
+
+(defpage "/site/:wid" {:keys [wid]} 
+	(json (data/find-website wid)))
+(defpage [:post "/site"] {:as website}
 	(info website)
+	(if(= "0" (website :_id)) 
+		(data/new-website website)
+		(data/update-website website))
 	(json "OK"))
