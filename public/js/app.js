@@ -3,16 +3,27 @@
 /////
 angular.element(document).ready(function() {
     angular.bootstrap(document);
-    
 });
-google.load("visualization", "1", {packages:["corechart"]});
+
+try {
+   google.load("visualization", "1", {packages:["corechart"]});
+} catch(e) {
+  console.log("Can not load google");
+}
+
 // nothing to do on load
 // google.setOnLoadCallback(drawChart);
-
 
 /////
 ///// Application
 /////
+function NavCtrl($scope, $location) {
+  $scope.navClass = function(page) {
+        var currentRoute = $location.path().substring(1) || 'welcome';
+        return currentRoute.indexOf(page) > -1 ? 'active' : '';
+  }
+}
+
 function EditCtrl($scope, $http, $routeParams) {
     $scope.wid = $routeParams.wid;
     console.log("edit"+$routeParams.wid);
@@ -23,10 +34,21 @@ function EditCtrl($scope, $http, $routeParams) {
         console.log("fetch filters");
         $scope.filters = data;
     }).error(function(data){console.log(data);});
+
+    $scope.edit = function(id) {
+      console.log("edit:"+id);
+    }
+    $scope.delete = function(id) {
+      console.log("delete:"+id);
+    }
+    $scope.add = function() {
+      console.log("Add filter");
+        // $scope.filters.push();
+    }
 }
 
 function WelcomeCtrl($scope, $http) {
-    $("#navwelcome").toggleClass("active");
+    //$("#navwelcome").toggleClass("active");
 
     $scope.refresh = function(id) {
         console.log("refreshing:"+id);
@@ -43,7 +65,12 @@ function WelcomeCtrl($scope, $http) {
 
 function ChartsCtrl($scope, $routeParams) {
     $scope.wid = $routeParams.wid;
-    $("#navchart").toggleClass("active");
+
+    //$("#navchart").toggleClass("active");
+
+    if($routeParams.fid!=null) {
+        drawChart($routeParams.fid);
+    }
 
     $scope.clean = function() {
 
@@ -51,6 +78,9 @@ function ChartsCtrl($scope, $routeParams) {
 }
 
 function drawChart(id) {
+    $("#filterslist tr").removeClass("success");
+    
+
     var jsonData = $.ajax({
       url: "/points/"+id,
       dataType:"json",
@@ -69,6 +99,8 @@ function drawChart(id) {
        values["google"][0]
       ];
       array.push(line);
+
+      $("#f"+id).addClass("success");
 }
 
   var data = google.visualization.arrayToDataTable(array);
@@ -89,8 +121,9 @@ function FiltersCtrl($scope, $http) {
         $scope.filters = data;
     }).error(function(data){console.log(data);});
 
+
+
     $scope.click = function(id) {
-        console.log(id);
         drawChart(id);
     }
 
@@ -98,7 +131,6 @@ function FiltersCtrl($scope, $http) {
 
 function WebsiteCtrl($scope, $http) {
     $http.get('/sites/nico').success(function(data) {
-        console.log("hello");
         $scope.sites = data;
     }).error(function(data) {alert("failed")});
 }

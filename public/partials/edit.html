@@ -1,4 +1,5 @@
 <div class="span3">
+	<a href="#/charts/{{wid}}"><img src="/icons/chart.png"/></a>
 </div>
 
 <div class="span6">
@@ -29,12 +30,15 @@
 <div class="span3">
 	<form class="form-horizontal">
 		<fieldset>
-			<legend>Filters</legend>
-			<ul>
-				<li ng-repeat="f in filters | filter:query | orderBy:orderProp" class="thumbnail">
-					<a ng-click="click(f._id)">{{f.keywords}}</a>
-				</li>
-			</ul>
+			<legend>Filters&nbsp;<a ng-click="add()"><img class="icon" src="icons/Plus.png"/></a></legend>
+			<table id="websiteslist" class="table table-bordered">
+				<tr ng-repeat="f in filters | filter:query | orderBy:orderProp" class="thumbnail">
+					<td><a ng-click="click(f._id)">{{f.keywords}}</a></td>
+					<td><a ng-click="edit(f._id)"><img src="icons/edit.png" class="icon"/></a></td>
+					<td><a ng-click="delete(f._id)"><img src="icons/Minus.png" class="icon"/></a></td>
+					<td><a href="#/charts/{{wid}}/{{f._id}}"><img src="icons/chart.png" class="icon"/></a></td>
+				</tr>
+			</table>
 		</fieldset>
 	</form>
 </div>

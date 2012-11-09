@@ -1,13 +1,15 @@
 <div class="row" ng-controller="FiltersCtrl">
 
+	<div class="span1"></div>
     <div class="span2" style="margin-top:100px">
-      <ul>
-        <li ng-repeat="f in filters | filter:query | orderBy:orderProp" class="thumbnail">
-        	<a ng-click="click(f._id)">{{f.keywords}}</a></li>
-      </ul>
+      <table id="filterslist" class="table table-bordered">
+        <tr id="f{{f._id}}" ng-repeat="f in filters | filter:query | orderBy:orderProp">
+        	<td><a ng-click="click(f._id)">{{f.keywords}}</a></td>
+        </tr>
+      </table>
     </div>
 
-    <div id="chart_div" class="span9" style="margin-top: -20px">
+    <div id="chart_div" class="span8" style="margin-top: -20px">
     </div>
 
 </div>
