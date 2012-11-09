@@ -3,6 +3,7 @@
 	(:use [net.cgrand.enlive-html 
 		:only [defsnippet deftemplate at content set-attr attr? strict-mode]])
 	(:require [seow.core :as seo])
+ 	(:use [clojure.tools.logging :only (info error)])
 	(:require [noir.response :as response])
 	(:require [cheshire.custom :as json])
 	(:require [seow.data.mongo :as data]))
@@ -34,4 +35,9 @@
 	(json (data/twoweeks fid)))
 (defpage "/site/update/:wid" {:keys [wid]}
 	(seo/update-score wid)
+	(json "OK"))
+(defpage "/sites" []
+	"hello")
+(defpage [:post "/sites"] {:as website}
+	(info website)
 	(json "OK"))

@@ -26,6 +26,7 @@ function NavCtrl($scope, $location) {
 
 function EditCtrl($scope, $http, $routeParams) {
     $scope.wid = $routeParams.wid;
+    $scope.website = {"id":$scope.wid};
     console.log("edit"+$routeParams.wid);
     $http.get('/site/'+$scope.wid).success(function(data) {
         $scope.website = data;
@@ -44,6 +45,21 @@ function EditCtrl($scope, $http, $routeParams) {
     $scope.add = function() {
       console.log("Add filter");
         // $scope.filters.push();
+    }
+    $scope.save = function() {
+      console.log(JSON.stringify($scope.website));
+      $.ajax({
+      url: "/sites",
+      type: "post",
+      data: $scope.website,
+      dataType:"json",
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(data) {
+        console.log(data);
+      },
+      async: true});
     }
 }
 
@@ -65,8 +81,6 @@ function WelcomeCtrl($scope, $http) {
 
 function ChartsCtrl($scope, $routeParams) {
     $scope.wid = $routeParams.wid;
-
-    //$("#navchart").toggleClass("active");
 
     if($routeParams.fid!=null) {
         drawChart($routeParams.fid);
@@ -115,18 +129,13 @@ function drawChart(id) {
 
 
 function FiltersCtrl($scope, $http) {
-    console.log("enter filters");
     $http.get('/filters/'+$scope.wid).success(function(data) {
-        console.log("fetch filters");
         $scope.filters = data;
     }).error(function(data){console.log(data);});
-
-
 
     $scope.click = function(id) {
         drawChart(id);
     }
-
 }
 
 function WebsiteCtrl($scope, $http) {

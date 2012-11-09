@@ -8,9 +8,6 @@
  (:require [monger.collection :as mc])
  (:require [monger.core :as mg]))
 
-; useful
-; http://localhost:28017/mydb/
-
 ; records 
 (defrecord website [customer nom urls])
 (defrecord filtre [siteid keywords])
