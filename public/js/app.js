@@ -26,17 +26,19 @@ function NavCtrl($scope, $location) {
 
 function EditCtrl($scope, $http, $routeParams) {
     $scope.wid = $routeParams.wid;
-    $scope.website = {_id:$scope.wid, customer: "nico", nom: "新しい"};
+    $scope.website = {_id:$scope.wid, customer: "nico", nom: "", urls:[]};
 
-    console.log("edit"+$routeParams.wid);
-    $http.get('/site/'+$scope.wid).success(function(data) {
+    // console.log("edit"+$routeParams.wid);
+    if($scope.wid != "0") {
+      $http.get('/site/'+$scope.wid).success(function(data) {
         $scope.website = data;
     });
-    $http.get('/filters/'+$scope.wid).success(function(data) {
+      $http.get('/filters/'+$scope.wid).success(function(data) {
         console.log("fetch filters");
         $scope.filters = data;
-    }).error(function(data){console.log(data);});
-
+      }).error(function(data){console.log(data);});  
+    }
+    
     $scope.edit = function(id) {
       console.log("edit:"+id);
     }
@@ -69,7 +71,6 @@ function EditCtrl($scope, $http, $routeParams) {
 }
 
 function WelcomeCtrl($scope, $http) {
-    //$("#navwelcome").toggleClass("active");
 
     $scope.refresh = function(id) {
         console.log("refreshing:"+id);
@@ -81,6 +82,22 @@ function WelcomeCtrl($scope, $http) {
             $("#refresh-image").attr("src", "/icons/warning.png");
             $("#refresh-image").attr("title", "error");
         });
+    }
+
+    $scope.delete = function(id) {
+      $.ajax({
+        url: "/site/"+id,
+        type: "delete",
+        dataType:"json",
+        success: function(data) {
+          $scope.fetch();
+          console.log(data);
+        },
+        error: function(data) {
+          console.log(data);
+        },
+        async: true
+      });
     }
 }   
 
@@ -142,7 +159,12 @@ function FiltersCtrl($scope, $http) {
 }
 
 function WebsiteCtrl($scope, $http) {
-    $http.get('/sites/nico').success(function(data) {
+    $scope.fetch = function() {
+      $http.get('/sites/nico').success(function(data) {
         $scope.sites = data;
-    }).error(function(data) {alert("failed")});
+      }).error(function(data) {alert("failed")});  
+    }
+
+    fetch();
+    
 }

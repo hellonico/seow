@@ -15,6 +15,7 @@
 (defn json[result]
 	(response/content-type "application/json; charset=UTF-8" 
 		(json/generate-string result)))
+(def JSON_OK (json "OK"))
 
 ; Enlive Templates
 (deftemplate main 
@@ -38,13 +39,13 @@
 ; maybe bad naming
 (defpage "/site/update/:wid" {:keys [wid]}
 	(seo/update-score wid)
-	(json "OK"))
+	JSON_OK)
 
 (defpage "/site/:wid" {:keys [wid]} 
 	(json (data/find-website wid)))
 (defpage [:post "/site"] {:as website}
-	(info website)
-	(if(= "0" (website :_id)) 
-		(data/new-website website)
-		(data/update-website website))
-	(json "OK"))
+	(data/update-or-new website)
+	JSON_OK)
+(defpage [:delete "/site/:wid"] {:keys [wid]}
+	(data/delete-website wid)
+	JSON_OK)

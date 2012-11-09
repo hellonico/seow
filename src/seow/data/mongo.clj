@@ -37,6 +37,12 @@
 	(mc/update-by-id :websites 
 		(ObjectId. (website :_id)) 
 		(dissoc website :_id)))
+(defn update-or-new[website]
+	(if(= "0" (website :_id)) 
+		(new-website website)
+		(update-website website)))
+(defn delete-website[id]
+	(mc/remove-by-id :websites (ObjectId. id)))
 
 ; filters 
 (defn new-filtre[siteid keywords]
