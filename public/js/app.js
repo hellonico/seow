@@ -71,6 +71,16 @@ function EditCtrl($scope, $http, $routeParams) {
 }
 
 function WelcomeCtrl($scope, $http) {
+    function fetch() {
+        $http.get('/sites/nico').success(function(data) {
+        $scope.sites = data;
+      }).error(function(data) {alert("failed")});  
+    }
+    
+    $scope.fetch = function() {
+      fetch();  
+    }
+    fetch();
 
     $scope.refresh = function(id) {
         console.log("refreshing:"+id);
@@ -159,12 +169,8 @@ function FiltersCtrl($scope, $http) {
 }
 
 function WebsiteCtrl($scope, $http) {
-    $scope.fetch = function() {
-      $http.get('/sites/nico').success(function(data) {
-        $scope.sites = data;
-      }).error(function(data) {alert("failed")});  
-    }
 
-    fetch();
+
+    // fetch();
     
 }
