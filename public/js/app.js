@@ -70,6 +70,19 @@ function EditCtrl($scope, $http, $routeParams) {
     }
 }
 
+
+function refreshSiteStats($http, id) {
+    console.log("refreshing:"+id);
+        $("#refresh-image").attr("src", "/icons/loading.gif");
+        $("#refresh-image").attr("title", "loading");
+        $http.get('/site/update/'+id).success(function(data) {
+            $("#refresh-image").attr("src", "/icons/refresh.png");
+        }).error(function(data) {
+            $("#refresh-image").attr("src", "/icons/warning.png");
+            $("#refresh-image").attr("title", "error");
+        });
+}
+
 function WelcomeCtrl($scope, $http) {
     function fetch() {
         $http.get('/sites/nico').success(function(data) {
@@ -83,15 +96,7 @@ function WelcomeCtrl($scope, $http) {
     fetch();
 
     $scope.refresh = function(id) {
-        console.log("refreshing:"+id);
-        $("#refresh-image").attr("src", "/icons/loading.gif");
-        $("#refresh-image").attr("title", "loading");
-        $http.get('/site/update/'+id).success(function(data) {
-            $("#refresh-image").attr("src", "/icons/refresh.png");
-        }).error(function(data) {
-            $("#refresh-image").attr("src", "/icons/warning.png");
-            $("#refresh-image").attr("title", "error");
-        });
+        refreshSiteStats($http, id);
     }
 
     $scope.delete = function(id) {
@@ -166,11 +171,12 @@ function FiltersCtrl($scope, $http) {
     $scope.click = function(id) {
         drawChart(id);
     }
+
+    $scope.refresh = function() {
+      refreshSiteStats($http, $scope.wid);
+    }
 }
 
 function WebsiteCtrl($scope, $http) {
-
-
-    // fetch();
     
 }
