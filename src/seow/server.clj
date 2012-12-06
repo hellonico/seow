@@ -10,3 +10,6 @@
         port (Integer. (get (System/getenv) "PORT" "8080"))]
     (add-custom-middleware wrap-file "public")
     (server/start port {:mode mode :ns 'seow})))
+
+; for lein ring
+(def handler (server/gen-handler {:mode :dev :ns 'seow}))

@@ -1,6 +1,8 @@
 (defproject seow "1.0.0-SNAPSHOT"
   :description "Prototype for seo"
   :main seow.server
+  :plugins [[lein-ring "0.7.5"]]
+  :ring {:handler seow.server/handler}
   :dependencies [
    [noir "1.3.0-beta2"]
    [org.clojure/clojure "1.4.0"]
